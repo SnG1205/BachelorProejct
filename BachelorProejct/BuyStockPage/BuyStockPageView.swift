@@ -28,7 +28,7 @@ struct BuyStockPageView: View {
     
     init(clientId: Int) {
         self.clientId  = clientId
-        //_stocks = Query(filter: #Predicate<Stock>{stock in stock.clientId == clientId && stock.symbols == symbols})
+        _stocks = Query(filter: #Predicate<Stock>{stock in stock.clientId == clientId})
     }
     
     var body: some View {

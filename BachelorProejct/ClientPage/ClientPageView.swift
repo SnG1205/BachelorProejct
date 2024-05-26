@@ -14,6 +14,9 @@ struct ClientPageView: View {
     private var firstName: String
     private var lastName: String
     
+    @State private var isShowingBuySheet: Bool = false
+    @State private var isShowingDepotSheet: Bool = false
+    
     @Environment(\.modelContext) private var modelContext
     
     @Query private var users: [User]
@@ -27,15 +30,17 @@ struct ClientPageView: View {
     var body: some View {
         VStack(spacing: 30){
                 Text("Choose one of the options below")
-                NavigationLink(destination: BuyStockPageView(clientId: users[0].clientId!)){
-                 Text("Buy Stock") //Todo pass an id/name to view
-                }
+                Button("Buy Stock", action: {
+                    isShowingBuySheet = true
+                })
                 Button("Display Depot", action: {
-                    
+                    isShowingDepotSheet = true
                 })
                 Text(users[0].firstName)
                 Text(String(users.count))
             }
+        .sheet(isPresented: $isShowingBuySheet){ BuyStockPageView(clientId: users[0].clientId!)}
+        .sheet(isPresented: $isShowingDepotSheet){ DisplayDepotPageView(clientId: users[0].clientId!)}
     }
     
     static func predicate(firstName: String) -> Predicate<User>{

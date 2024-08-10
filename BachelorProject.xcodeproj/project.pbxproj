@@ -28,10 +28,6 @@
 		845E41512BF9693C00D34A05 /* StockItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E41502BF9693C00D34A05 /* StockItem.swift */; };
 		845E41542BF9708000D34A05 /* SellStockPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E41532BF9708000D34A05 /* SellStockPageView.swift */; };
 		845E41562BF97C7900D34A05 /* BuyStockPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E41552BF97C7900D34A05 /* BuyStockPageViewModel.swift */; };
-		845E41592BFA40ED00D34A05 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E41582BFA40ED00D34A05 /* Toast.swift */; };
-		845E415B2BFA411F00D34A05 /* ToastStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E415A2BFA411F00D34A05 /* ToastStyle.swift */; };
-		845E415D2BFA417200D34A05 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E415C2BFA417200D34A05 /* ToastView.swift */; };
-		845E415F2BFA41BE00D34A05 /* ToastModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E415E2BFA41BE00D34A05 /* ToastModifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,10 +53,6 @@
 		845E41502BF9693C00D34A05 /* StockItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockItem.swift; sourceTree = "<group>"; };
 		845E41532BF9708000D34A05 /* SellStockPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellStockPageView.swift; sourceTree = "<group>"; };
 		845E41552BF97C7900D34A05 /* BuyStockPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyStockPageViewModel.swift; sourceTree = "<group>"; };
-		845E41582BFA40ED00D34A05 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
-		845E415A2BFA411F00D34A05 /* ToastStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastStyle.swift; sourceTree = "<group>"; };
-		845E415C2BFA417200D34A05 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
-		845E415E2BFA41BE00D34A05 /* ToastModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,7 +85,6 @@
 		845E411C2BF40CAD00D34A05 /* BachelorProejct */ = {
 			isa = PBXGroup;
 			children = (
-				845E41572BFA3B6100D34A05 /* ToastMessage */,
 				845E41522BF9706D00D34A05 /* SellStockPage */,
 				845E414D2BF9686C00D34A05 /* DisplayDepotPage */,
 				845E41482BF8F45100D34A05 /* DisplayClientsPage */,
@@ -207,17 +198,6 @@
 			path = SellStockPage;
 			sourceTree = "<group>";
 		};
-		845E41572BFA3B6100D34A05 /* ToastMessage */ = {
-			isa = PBXGroup;
-			children = (
-				845E41582BFA40ED00D34A05 /* Toast.swift */,
-				845E415A2BFA411F00D34A05 /* ToastStyle.swift */,
-				845E415C2BFA417200D34A05 /* ToastView.swift */,
-				845E415E2BFA41BE00D34A05 /* ToastModifier.swift */,
-			);
-			path = ToastMessage;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -294,12 +274,9 @@
 				845E41342BF4298600D34A05 /* User.swift in Sources */,
 				845E41222BF40CAD00D34A05 /* Item.swift in Sources */,
 				845E414A2BF8F46900D34A05 /* DisplayClientsPageView.swift in Sources */,
-				845E415D2BFA417200D34A05 /* ToastView.swift in Sources */,
-				845E415B2BFA411F00D34A05 /* ToastStyle.swift in Sources */,
 				845E41542BF9708000D34A05 /* SellStockPageView.swift in Sources */,
 				845E41442BF6855700D34A05 /* BuyStockPageView.swift in Sources */,
 				845E411E2BF40CAD00D34A05 /* BachelorProejctApp.swift in Sources */,
-				845E415F2BFA41BE00D34A05 /* ToastModifier.swift in Sources */,
 				845E413B2BF673D200D34A05 /* StockApi.swift in Sources */,
 				845E41472BF6AB8200D34A05 /* CreateClientView.swift in Sources */,
 				845E414C2BF9206600D34A05 /* ClientItem.swift in Sources */,
@@ -308,7 +285,6 @@
 				845E41312BF41E8100D34A05 /* HomePageViewModel.swift in Sources */,
 				845E41562BF97C7900D34A05 /* BuyStockPageViewModel.swift in Sources */,
 				845E41512BF9693C00D34A05 /* StockItem.swift in Sources */,
-				845E41592BFA40ED00D34A05 /* Toast.swift in Sources */,
 				845E413E2BF681BE00D34A05 /* EmployeePageView.swift in Sources */,
 				845E414F2BF9688600D34A05 /* DisplayDepotPageView.swift in Sources */,
 			);
@@ -441,9 +417,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BachelorProejct/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -458,6 +436,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Serhii.BachelorProejct;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -469,9 +448,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BachelorProejct/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -486,6 +467,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Serhii.BachelorProejct;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

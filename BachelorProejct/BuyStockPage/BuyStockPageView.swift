@@ -16,7 +16,8 @@ struct BuyStockPageView: View {
     @State private var responseText: String = ""
     @State private var apiResponse: ApiResponse?
     @State private var viewModel = BuyStockPageViewModel(symbols: "")
-    @State private var toast: Toast? = nil
+    @State private var isAlert: Bool = false
+    @State private var alertText: String = ""
     
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
@@ -41,38 +42,62 @@ struct BuyStockPageView: View {
                 Text(responseText)
                 Button("Get stock", action: {
                     Task{
-                        apiResponse = try await fetchStock(symbols: symbols)
-                        responseText = "Price of the \(apiResponse!.ticker): \(apiResponse!.results[0].o)"
+                        do {
+                            apiResponse = try await fetchStock(symbols: symbols)
+                            responseText = "Price of the \(apiResponse!.ticker): \(apiResponse!.results[0].o)"
+                        } catch {
+                            isAlert = true
+                            alertText = "Stocks were not found"
+                        }
                     }
                 })
                 Button("Buy stock", action: {
-                    let stockToUpdate = isAcquired(symbols: apiResponse!.ticker)
-                    
-                    if(stockToUpdate != nil){
-                        let totalPrice = Double(amount)! * apiResponse!.results[0].o
-                        if(balance[0].balance < totalPrice){
-                            //Todo  display toast
+                    if(apiResponse == nil){
+                        isAlert = true
+                        alertText = "Search for stocks first"
+                    } else{
+                        let stockToUpdate = isAcquired(symbols: apiResponse!.ticker)
+                        
+                        if(stockToUpdate != nil){
+                            guard let doubleAmount = Double(amount) else{
+                                isAlert = true
+                                alertText = "Enter an amount first"
+                                return
+                            }
+                            let totalPrice = doubleAmount * apiResponse!.results[0].o
+                            if(balance[0].balance < totalPrice){
+                                isAlert = true
+                                alertText = "Not enough balance to buy this amount"
+                            }
+                            else{
+                                updateValue(stock: stockToUpdate!, updatedAmount: stockToUpdate!.amount + Int(amount)!, updatedPrice: apiResponse!.results[0].o)
+                                updateBalance(balance: balance[0], updatedBalance: balance[0].balance - totalPrice)
+                                isAlert = true
+                                alertText = "Shares were bought successfully"
+                            }
                         }
                         else{
-                            updateValue(stock: stockToUpdate!, updatedAmount: stockToUpdate!.amount + Int(amount)!, updatedPrice: apiResponse!.results[0].o)
-                            updateBalance(balance: balance[0], updatedBalance: balance[0].balance - totalPrice)
+                            let totalPrice = Double(amount)! * apiResponse!.results[0].o
+                            if(balance[0].balance < totalPrice){
+                                isAlert = true
+                                alertText = "Not enough balance to buy this amount"
+                            }
+                            else{
+                                modelContext.insert(Stock(id: UUID(), clientId: clientId, symbols: apiResponse!.ticker, price: apiResponse!.results[0].o, amount: Int(amount)!))
+                                updateBalance(balance: balance[0], updatedBalance: balance[0].balance - totalPrice)
+                                isAlert = true
+                                alertText = "Shares were bought successfully"
+                            }
                         }
+                        symbols = ""
+                        amount = ""
                     }
-                    else{
-                        let totalPrice = Double(amount)! * apiResponse!.results[0].o
-                        if(balance[0].balance < totalPrice){
-                            toast = Toast(style: .error, message: "Not enough balance")
-                            //Todo  display toast
-                        }
-                        else{
-                            modelContext.insert(Stock(id: UUID(), clientId: clientId, symbols: apiResponse!.ticker, price: apiResponse!.results[0].o, amount: Int(amount)!))
-                            updateBalance(balance: balance[0], updatedBalance: balance[0].balance - totalPrice)
-                        }
-                    }
-                    symbols = ""
-                    amount = ""
                 })
                 Text(String(clientId))
+            }
+            .alert(isPresented: $isAlert){
+                Alert(title: Text(alertText),
+                      dismissButton: .default(Text("OK")))
             }
             .navigationTitle("Buy Stock")
             .textFieldStyle(.roundedBorder)
@@ -83,7 +108,6 @@ struct BuyStockPageView: View {
                     }
                 }
             }
-            .toastView(toast: $toast)
         }
     }
     

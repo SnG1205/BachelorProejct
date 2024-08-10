@@ -13,6 +13,8 @@ struct CreateClientView: View {
     @State private var firstName: String = ""
     @State private var lastName: String = ""
     @State private var address: String = ""
+    @State private var isAlert: Bool = false
+    @State private var alertText: String = ""
     
     @AppStorage("clientId") private var id = 1
     
@@ -36,12 +38,27 @@ struct CreateClientView: View {
                 }
                 ToolbarItemGroup(placement: .topBarTrailing){
                     Button("Save"){
-                        modelContext.insert(User(clientId: id, firstName: firstName, lastName: lastName, address: address, isEmployee: false))
-                        id += 1
-                        dismiss()
+                        createUser()
                     }
                 }
             }
+            .alert(isPresented: $isAlert){
+                Alert(title: Text(alertText),
+                      dismissButton: .default(Text("OK")))
+            }
+        }
+    }
+    
+    private func createUser(){ //I have no idea whether passing variables as parameters is needed since they are not being modified or updated here in any way
+        if(firstName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+           || lastName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+           || address.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty){
+            isAlert = true
+            alertText = "Fields can't be empty"
+        } else{
+            modelContext.insert(User(clientId: id, firstName: firstName, lastName: lastName, address: address, isEmployee: false))
+            id += 1
+            dismiss()
         }
     }
 }

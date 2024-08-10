@@ -15,7 +15,8 @@ struct EmployeePageView: View {
     @State private var isShowingCreateSheet: Bool = false
     @State private var isShowingBuySheet: Bool = false
     @State private var isShowingDepotSheet: Bool = false
-    @State private var toast: Toast? = nil
+    @State private var isAlert: Bool = false
+    @State private var alertText: String = ""
     @Environment(\.modelContext) private var modelContext
     @Query private var balance: [Balance]
     @Query(sort: \User.clientId) var users: [User]
@@ -34,11 +35,18 @@ struct EmployeePageView: View {
                 //Spacer()
                 //NavigationLink(value: "buy", label: {Text("Buy Stock")})
                 Button("Buy Stock"){
-                    isShowingBuySheet = checkName(clientId: clientId)
-                    //Todo add toast if false
+                    if(checkName(clientId: clientId)){
+                        isShowingBuySheet = true
+                    }
+                    else{
+                        isAlert = true
+                        alertText = "No user found with such id"
+                    }
                 }
                 Button("Get Balance", action: {
-                    toast = Toast(style: .success, message: "wohooo")
+                    isAlert = true
+                    alertText = String(format: "%.2f", balance.first!.balance)
+                    //Todo display alert
                 })
                 Button("Create Client", action: {
                     isShowingCreateSheet = true
@@ -47,7 +55,13 @@ struct EmployeePageView: View {
                     Text("Display Clients")
                 }
                 Button("Display Depot", action: {
-                   isShowingDepotSheet = checkName(clientId: clientId)
+                    if(checkName(clientId: clientId)){
+                        isShowingDepotSheet = true
+                    }
+                    else{
+                        isAlert = true
+                        alertText = "No user found with such id"
+                    }
                 })
                 Text(firstName)
                 Text(String(users[0].clientId!))
@@ -58,12 +72,12 @@ struct EmployeePageView: View {
             .sheet(isPresented: $isShowingDepotSheet){ DisplayDepotPageView(clientId: Int(clientId)!)}
             .textFieldStyle(.roundedBorder)
             .navigationTitle("Welcome, \(firstName)")
+            .alert(isPresented: $isAlert){
+                Alert(title: Text(alertText),
+                      dismissButton: .default(Text("OK")))
+            }
             .onAppear(perform: {
-                if(balance.isEmpty){
-                    modelContext.insert(Balance(balance: 1000000))
-                }
             })
-            .toastView(toast: $toast)
         //}
     }
     

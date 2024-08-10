@@ -16,9 +16,12 @@ struct HomePageView: View {
     @State private var lastName: String = ""
     @State private var bol : Bool? = nil
     @State private var stackPath: [Bool] = []
+    @State private var isAlert: Bool = false
+    @State private var alertText: String = ""
     
     @Environment(\.modelContext) private var modelContext
     @Query private var users: [User]
+    @Query private var balance: [Balance]
     @AppStorage("clientId") private var id = 1
     
     var body: some View {
@@ -39,44 +42,37 @@ struct HomePageView: View {
                     if(bol != nil){
                         stackPath.append(bol!)
                     }
-                })
-                if (bol != nil && bol!) {
-                    Text("Employee")
-                }
-                if (bol != nil && !bol!) {
-                    Text("Client")
-                }
-                Button("Delete"){
-                    Task{
-                        try modelContext.delete(model: User.self, where: #Predicate<User>{user in user.firstName == "Daria"})
-                    }
-                    //Text(users[0].firstName + users[0].lastName)
-                }
-            }
-                .textFieldStyle(.roundedBorder)
-                .navigationDestination(for: Bool.self, destination: { bool in
-                    if(bool){
-                        //Text("Why does this work and other doesn`t")
-                        EmployeePageView(firstName: firstName)
-                    }
                     else{
-                        ClientPageView(firstName: firstName, lastName: lastName)
+                        isAlert = true
+                        alertText = "User was not found"
                     }
                 })
-                .navigationDestination(for: String.self, destination: {string in
-                    if(string == "buy"){
-                        //BuyStockPageView()
-                    }
-                })
+            }
+            .textFieldStyle(.roundedBorder)
+            .navigationDestination(for: Bool.self, destination: { bool in
+                if(bool){
+                    //Text("Why does this work and other doesn`t")
+                    EmployeePageView(firstName: firstName)
+                }
+                else{
+                    ClientPageView(firstName: firstName, lastName: lastName)
+                }
+            })
+            }
+            .alert(isPresented: $isAlert){
+                Alert(title: Text(alertText),
+                      dismissButton: .default(Text("OK")))
             }
             .onAppear(perform: {
                 if(users.isEmpty){
                     modelContext.insert(User(clientId: id, firstName: "Serhii", lastName: "Holiev", isEmployee: true))
                     id += 1
                 }
+                if(balance.isEmpty){
+                    modelContext.insert(Balance(balance: 1000000))
+                }
             })
         }
-        
         
         private func checkName(firstName: String, lastName: String) -> Bool?{
             for user in users{

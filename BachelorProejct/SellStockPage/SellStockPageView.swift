@@ -34,10 +34,17 @@ struct SellStockPageView: View {
         NavigationStack{
             VStack(spacing: 30){
                 Text("Enter an amount You want to sell")
+                    .padding(EdgeInsets(top: 30, leading: 0, bottom: 10, trailing: 0))
+                    .font(.system(size: 20))
                 TextField("Amount", text: $amount)
+                    .frame(width: 200)
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 30, trailing: 0))
+                    .autocorrectionDisabled(true)
                 Button("Sell Stock"){
                     sellStock()
                 }
+                .font(.system(size: 24))
+                Spacer()
             }
             .navigationTitle("Sell Stock")
             .textFieldStyle(.roundedBorder)

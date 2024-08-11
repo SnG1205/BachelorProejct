@@ -11,6 +11,8 @@ import SwiftData
 
 struct HomePageView: View {
     
+    @State private var firstNameHolder: String = ""
+    
     @State private var homePageViewModel = HomePageViewModel()
     @State private var firstName: String = ""
     @State private var lastName: String = ""
@@ -26,36 +28,46 @@ struct HomePageView: View {
     
     var body: some View {
         NavigationStack(path: $stackPath){
-            VStack{
+            VStack(alignment: .center){
                 Text("Please enter Your name below.")
+                    .padding(EdgeInsets(top: 40, leading: 10, bottom: 10, trailing: 10))
+                    .font(.system(size: 20))
                 TextField("First name", text: $firstName)
-                    .onSubmit {
-                    }
+                    .frame(width: 250)
+                    .padding([.bottom, .top], 20)
+                    .autocorrectionDisabled(true)
                 TextField("Last name", text: $lastName)
-                    .onSubmit {
-                    }
-                /*NavigationLink(value: checkName(firstName: firstName, lastName: lastName)){
-                 Text("Log In")
-                 }*/
-                Button("Log In", action: {
+                    .frame(width: 250)
+                    .padding(EdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0))
+                    .autocorrectionDisabled(true)
+                Button("Log In"){
                     bol = checkName(firstName: firstName, lastName: lastName)
                     if(bol != nil){
                         stackPath.append(bol!)
+                        firstNameHolder = firstName
+                        firstName = ""
+                        lastName = ""
                     }
                     else{
                         isAlert = true
                         alertText = "User was not found"
+                        firstName = ""
+                        lastName = ""
                     }
-                })
+                }
+                .frame(width: 70, height: 80)
+                .font(.system(size: 24))
+                Spacer()
             }
+            .navigationBarTitle("Banking App")
             .textFieldStyle(.roundedBorder)
             .navigationDestination(for: Bool.self, destination: { bool in
                 if(bool){
                     //Text("Why does this work and other doesn`t")
-                    EmployeePageView(firstName: firstName)
+                    EmployeePageView(firstName: firstNameHolder)
                 }
                 else{
-                    ClientPageView(firstName: firstName, lastName: lastName)
+                    ClientPageView(firstName: firstNameHolder)
                 }
             })
             }

@@ -36,10 +36,19 @@ struct BuyStockPageView: View {
         NavigationStack{
             VStack(spacing: 20){
                 Text("Enter stock symbols You want to buy")
+                    .padding(EdgeInsets(top: 30, leading: 0, bottom: 5, trailing: 0))
                 TextField("Symbols", text: $symbols)
+                    .frame(width: 150)
+                    .padding([.bottom], 30)
+                    .autocorrectionDisabled(true)
                 Text("Enter amount You want to buy")
+                    .padding([.bottom], 5)
                 TextField("Amount", text: $amount)
+                    .frame(width: 150)
+                    .padding([.bottom], 20)
+                    .autocorrectionDisabled(true)
                 Text(responseText)
+                    .padding([.bottom], 20)
                 Button("Get stock", action: {
                     Task{
                         do {
@@ -48,9 +57,12 @@ struct BuyStockPageView: View {
                         } catch {
                             isAlert = true
                             alertText = "Stocks were not found"
+                            symbols = ""
                         }
                     }
                 })
+                .font(.system(size: 22))
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
                 Button("Buy stock", action: {
                     if(apiResponse == nil){
                         isAlert = true
@@ -62,12 +74,14 @@ struct BuyStockPageView: View {
                             guard let doubleAmount = Double(amount) else{
                                 isAlert = true
                                 alertText = "Enter an amount first"
+                                amount = ""
                                 return
                             }
                             let totalPrice = doubleAmount * apiResponse!.results[0].o
                             if(balance[0].balance < totalPrice){
                                 isAlert = true
                                 alertText = "Not enough balance to buy this amount"
+                                amount = ""
                             }
                             else{
                                 updateValue(stock: stockToUpdate!, updatedAmount: stockToUpdate!.amount + Int(amount)!, updatedPrice: apiResponse!.results[0].o)
@@ -77,7 +91,13 @@ struct BuyStockPageView: View {
                             }
                         }
                         else{
-                            let totalPrice = Double(amount)! * apiResponse!.results[0].o
+                            guard let doubleAmount = Double(amount) else{
+                                isAlert = true
+                                alertText = "Enter an amount first"
+                                amount = ""
+                                return
+                            }
+                            let totalPrice = doubleAmount * apiResponse!.results[0].o
                             if(balance[0].balance < totalPrice){
                                 isAlert = true
                                 alertText = "Not enough balance to buy this amount"
@@ -92,8 +112,10 @@ struct BuyStockPageView: View {
                         symbols = ""
                         amount = ""
                     }
+                    
                 })
-                Text(String(clientId))
+                .font(.system(size: 22))
+                Spacer()
             }
             .alert(isPresented: $isAlert){
                 Alert(title: Text(alertText),

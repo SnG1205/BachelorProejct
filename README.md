@@ -4,5 +4,5 @@ Swift application that is aimed to run on iOS devices. Application itself is a s
 
 ## Getting Started
 
-On first app startup user with employee rights and following credentials is created: first name - "Serhii", last name - "Holiev". This allows to login to employee_page and access all existing functionality
+On first app startup user with employee rights and following credentials is created: first name - "Serhii", last name - "Holiev". This allows to login to employee_page and access all existing functionality.
 Apart from it, banking balance is created and set to 1 billion.

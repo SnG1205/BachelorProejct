@@ -11,6 +11,7 @@ import SwiftData
 
 struct DisplayDepotPageView: View {
     
+    @State private var depotSum: Double = 0
     @Environment(\.dismiss) private var dismiss
     @Query private var stocks: [Stock]
     
@@ -23,8 +24,10 @@ struct DisplayDepotPageView: View {
     
     var body: some View {
         NavigationStack{
-            List(stocks){
-                stock in StockItem(stock: stock, index: stocks.firstIndex(where: {$0 == stock})!)
+            VStack{
+                List(stocks){
+                    stock in StockItem(stock: stock, index: stocks.firstIndex(where: {$0 == stock})!)
+                }
             }
             .navigationTitle("Your Depot")
             .toolbar{
